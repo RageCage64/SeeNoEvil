@@ -3,32 +3,41 @@ using System.Linq;
 using SeeNoEvil.Tiled;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace SeeNoEvil.Level {
     public class TilemapLevel {
         private readonly string MapName;
         private TiledMap Map;
+		private Dictionary<string, Texture2D> tilesetTextures;
 
         public TilemapLevel(string tilemapName) {
             MapName = tilemapName;
         }
 
-        public void LoadMap() {
-			Map = TiledParser.ReadMapJson(MapName);
+        public void LoadMap(ContentManager Content) {
+			Map = new TiledMap(TiledParser.ReadMapJson(MapName));
+			Map.LoadView();
+			tilesetTextures = Map.GetTilesetNames().Aggregate(new Dictionary<string, Texture2D>(),
+				(content, contentName) => {
+					content.Add(contentName, Content.Load<Texture2D>(contentName));
+					return content;
+				});
 		} 
 
 		public IEnumerable<string> GetTilesetNames() {
 			return Map.GetTilesetNames();
 		}
 
-		public void Draw(Camera viewport, SpriteBatch spritebatch, IDictionary<string, Texture2D> this_sucks) {
-			IEnumerable<TileLocation> locations = Map.DrawView(viewport);
-			locations.ToList().ForEach(tile => {
-				Texture2D this_one;
-				if(tile.tile.gid > 0 && this_sucks.TryGetValue(tile.tile.setName, out this_one)) {
-					spritebatch.Draw(this_one, tile.location, tile.tile.srcRectangle, Color.White);
-				}
-			});
+		public void Draw(SpriteBatch spritebatch, string layer) {
+			List<TileLocation> locations;
+			if(Map.View.TryGetValue(layer, out locations)) 
+				locations.ForEach(tile => {
+					Texture2D layerTexture;
+					if(tile.tile.gid > 0 && tilesetTextures.TryGetValue(tile.tile.setName, out layerTexture)) {
+						spritebatch.Draw(layerTexture, tile.location, tile.tile.srcRectangle, Color.White);
+					}	
+				});
 		}
     }
 }

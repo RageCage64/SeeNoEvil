@@ -1,21 +1,26 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
 namespace SeeNoEvil.Level {
-	public struct Camera {
-		public int width;
-		public int height;
-		public int x;
-		public int y;
-	}
+	public class Camera {
+		public Matrix Transform {get; private set;}
+		public Viewport Viewport {get; private set;}
+		public Vector2 Centre {get; set;}
 
-    // public class Camera {
-	// 	private Viewport m_dimension; 
+		private Vector3 TranslationVector => 
+			new Vector3(-Centre.X + (Viewport.Width / 2),
+						-Centre.Y + (Viewport.Height / 2),
+						0);
 
-    //     public Camera(int x, int y) {
-	// 		m_dimension.x = x;
-	// 		m_dimension.y = x;
-    //     }
+		public Camera(Viewport _viewport) {
+			Viewport = _viewport;
+			//TODO This is to experiment
+			Centre = new Vector2(Viewport.Width / 2, Viewport.Height / 2);
+		}
 
-	// 	public Viewport GetDimension() {
-	// 		return m_dimension;
-	// 	}
-    // }
+        public void Update(Vector2 position, Vector2 velocity) {
+			Centre = Vector2.Add(Centre, velocity);
+			Transform = Matrix.CreateTranslation(TranslationVector);
+		}
+    }
 }

@@ -10,30 +10,25 @@ using SeeNoEvil.Level;
 
 namespace SeeNoEvil
 {
-    public class Game1 : Game
+    public class SeeNoEvilGame : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         TilemapLevel level;
-        Dictionary<string, Texture2D> tilesets;
-        Camera viewport;
+        Camera camera;
 
-        public Game1()
+        public SeeNoEvilGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-			viewport.height = 720;
-			viewport.width = 1280;
-			viewport.x = 0;
-			viewport.y = 0;
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
             level = new TilemapLevel("./Maps/MagicLandCsv.json");
-            level.LoadMap();
+            // level = new TilemapLevel("./Maps/test.json");
 
             base.Initialize();
         }
@@ -41,12 +36,8 @@ namespace SeeNoEvil
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            tilesets = new Dictionary<string, Texture2D>();
-            tilesets = level.GetTilesetNames().Aggregate(new Dictionary<string, Texture2D>(),
-                (content, contentName) => { 
-                        content.Add(contentName, Content.Load<Texture2D>(contentName));
-                        return content;
-                });
+            level.LoadMap(Content);
+            camera = new Camera(GraphicsDevice.Viewport); 
         }
 
         protected override void Update(GameTime gameTime)
@@ -54,24 +45,29 @@ namespace SeeNoEvil
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            int xVelocity = 0, yVelocity = 0;
             if(Keyboard.GetState().IsKeyDown(Keys.Down))
-                viewport.y += 16;
+                yVelocity = 1;
             if(Keyboard.GetState().IsKeyDown(Keys.Up))
-                viewport.y -= 16;
+                yVelocity = -1;
             if(Keyboard.GetState().IsKeyDown(Keys.Left))
-                viewport.x -= 16;
+                xVelocity = -1;
             if(Keyboard.GetState().IsKeyDown(Keys.Right))
-                viewport.x += 16;
+                xVelocity = 1;
+            camera.Update(Vector2.Zero, new Vector2(xVelocity, yVelocity));
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
-            spriteBatch.Begin();
-            level.Draw(viewport, spriteBatch, tilesets);
+            spriteBatch.Begin(
+                transformMatrix: camera.Transform
+            );
+            level.Draw(spriteBatch, "background");
+            // level.Draw(spriteBatch, "Tile Layer 1");
             spriteBatch.End();
 
             base.Draw(gameTime);
