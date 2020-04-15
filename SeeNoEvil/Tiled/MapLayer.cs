@@ -1,3 +1,4 @@
+// TODO Handle flipped tiles!
 using System.Collections.Generic;
 using System.Linq;
 using SeeNoEvil.Level;
@@ -35,23 +36,5 @@ namespace SeeNoEvil.Tiled {
 				} else column++;
 			});
 		}
-
-		// TODO Remember to delete this if it's garbo
-        // public IEnumerable<DataCoordinate> GetVisibleTiles(Camera viewport, int tileHeight, int tileWidth) {
-		// 	if(!BuiltCoordinates) BuildCoordinates();
-
-		// 	int startColumn = viewport.x / tileWidth;
-		// 	int endColumn = startColumn + (viewport.width / tileWidth);
-		// 	int startRow = viewport.y / tileHeight;
-		// 	int endRow = startRow + (viewport.height / tileHeight);
-
-		// 	return DataCoordinates.Where(coord =>
-		// 		startRow <= coord.y &&
-		// 		endRow >= coord.y &&
-		// 		startColumn <= coord.x &&
-		// 		endColumn >= coord.x
-		// 	);
-		// }
-
     }    
 }

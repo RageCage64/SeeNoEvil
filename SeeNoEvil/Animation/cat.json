@@ -1,0 +1,69 @@
+{
+    "name": "cat",
+    "image": "catsandghosts",
+    "width": 32,
+    "height": 32,
+    "animations": [
+        {
+            "id": 1,
+            "name": "Idle",
+            "frames": [
+                {
+                    "id": 1,
+                    "x": 0,
+                    "y": 32,
+                    "timer": 0
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Walk X",
+            "frames": [
+                {
+                    "id": 1,
+                    "x": 64,
+                    "y": 32,
+                    "timer": 3
+                },
+                {
+                    "id": 2,
+                    "x": 32,
+                    "y": 32,
+                    "timer": 3
+                },
+                {
+                    "id": 3,
+                    "x": 0,
+                    "y": 32,
+                    "timer": 3
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Walk Y",
+            "frames": [
+                {
+                    "id": 1,
+                    "x": 32,
+                    "y": 64,
+                    "timer": 3
+                },
+                {
+                    "id": 2,
+                    "x": 64,
+                    "y": 64,
+                    "timer": 3
+                }
+
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Scared",
+            "frames": [
+            ]
+        }
+    ]
+}

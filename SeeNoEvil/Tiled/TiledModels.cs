@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 
 namespace SeeNoEvil.Tiled {
-    public class TiledModel {
-        public TiledModel() {}
-
+    public struct TiledModel {
         public bool Infinite {get; set;}
         public IEnumerable<MapLayerModel> Layers {get; set;}
 		public IEnumerable<TileSetModel> TileSets {get; set;}
@@ -13,9 +11,7 @@ namespace SeeNoEvil.Tiled {
 		public int Width {get; set;}
     }
 
-	public class TileSetModel {
-		public TileSetModel() {}
-
+	public struct TileSetModel {
         public string Image {get; set;}
 		public string Name {get; set;}
 		public int ImageHeight {get; set;}
@@ -29,9 +25,7 @@ namespace SeeNoEvil.Tiled {
     }
 
 
-	public class MapLayerModel {
-        public MapLayerModel() { }
-
+	public struct MapLayerModel {
 		public string Name {get; set;}
 		public int Width {get; set;}
 		public int Height {get; set;}
