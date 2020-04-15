@@ -11,6 +11,8 @@ namespace SeeNoEvil.Character {
         private Animation CurrentAnimation;
         public Frame CurrentFrame => 
             CurrentAnimation.GetFrame(); 
+        public bool IsDefault => 
+            CurrentAnimation.Id == 1;
 
         public AnimationController(AnimationSetModel model) {
             Name = model.Name;

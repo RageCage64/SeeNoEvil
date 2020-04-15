@@ -4,18 +4,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SeeNoEvil.Character {
     public class Character {
-        protected Vector2 Destination {get; set;}
-        protected Vector2 Velocity {get; set;}
-        protected Vector2 Position {get; private set;}
-        protected bool Transform => 
+        private Vector2 Destination {get; set;}
+        private Vector2 Velocity {get; set;}
+        private Vector2 Position {get; set;}
+        private Texture2D SpriteSheet;
+
+        protected AnimationController AnimationController; 
+        protected int Width;
+        protected int Height;
+        protected Direction Facing;
+
+        protected bool Moving => 
             !Destination.Equals(Vector2.Zero) && 
             !Velocity.Equals(Vector2.Zero) &&
             !Position.Equals(Destination);
-
-        protected AnimationController AnimationController; 
-        protected Texture2D SpriteSheet;
-        protected int Width;
-        protected int Height;
 
         public Character(Vector2 position) {
             Position = position;
@@ -29,8 +31,10 @@ namespace SeeNoEvil.Character {
 
         // TODO Do I want to move every frame?
         public void Update() {
-            if(Transform) 
+            if(Moving) 
                 Position = Vector2.Add(Position, Velocity);
+            else if(!AnimationController.IsDefault) 
+                AnimationController.ChangeAnimation(1);
         }
 
         public void Draw(SpriteBatch spriteBatch) {
@@ -42,5 +46,33 @@ namespace SeeNoEvil.Character {
             spriteBatch.Draw(SpriteSheet, Position, srcRectangle, Color.White);
             // spriteBatch.Draw(SpriteSheet, Position, Color.White);
         }
+
+        public virtual void Move(Direction direction) {
+            if(!Moving) {
+                int x = 0, y = 0;
+                switch(direction) {
+                case Direction.Up:
+                    y = -1; 
+                    break;
+                case Direction.Down:
+                    y = 1;
+                    break;
+                case Direction.Left:
+                    x = -1;
+                    break;
+                case Direction.Right:
+                    x = 1;
+                    break;
+                }
+                Destination = Vector2.Add(Position, new Vector2(Width*x, Height*y));
+                Velocity = new Vector2(x, y);
+            }
+        }
+    }
+    public enum Direction {
+        Up,
+        Down,
+        Left,
+        Right
     }
 }
