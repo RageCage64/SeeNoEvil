@@ -1,68 +1,139 @@
 {
     "name": "cat",
-    "image": "catsandghosts",
+    "image": "Master-no-background-01",
     "width": 32,
     "height": 32,
     "animations": [
         {
             "id": 1,
-            "name": "Idle",
+            "name": "Walk Left",
             "frames": [
                 {
                     "id": 1,
-                    "x": 0,
-                    "y": 32,
-                    "timer": 0
-                }
-            ]
-        },
-        {
-            "id": 2,
-            "name": "Walk X",
-            "frames": [
-                {
-                    "id": 1,
-                    "x": 64,
-                    "y": 32,
+                    "x": 32,
+                    "y": 64,
                     "timer": 8
                 },
                 {
                     "id": 2,
-                    "x": 32,
-                    "y": 32,
+                    "x": 64,
+                    "y": 64,
                     "timer": 8
                 },
                 {
                     "id": 3,
                     "x": 0,
-                    "y": 32,
+                    "y": 64,
+                    "timer": 8
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Walk Right",
+            "frames": [
+                {
+                    "id": 1,
+                    "x": 32,
+                    "y": 96,
+                    "timer": 8
+                },
+                {
+                    "id": 2,
+                    "x": 64,
+                    "y": 96,
+                    "timer": 8
+                },
+                {
+                    "id": 3,
+                    "x": 0,
+                    "y": 96,
                     "timer": 8
                 }
             ]
         },
         {
             "id": 3,
-            "name": "Walk Y",
+            "name": "Walk Up",
             "frames": [
                 {
                     "id": 1,
                     "x": 32,
-                    "y": 64,
-                    "timer": 8
+                    "y": 128,
+                    "timer": 6
                 },
                 {
                     "id": 2,
-                    "x": 64,
-                    "y": 64,
-                    "timer": 8
+                    "x": 0,
+                    "y": 128,
+                    "timer": 6
                 }
-
             ]
         },
         {
             "id": 4,
-            "name": "Scared",
+            "name": "Walk Down",
             "frames": [
+                {
+                    "id": 1,
+                    "x": 32,
+                    "y": 160,
+                    "timer": 6
+                },
+                {
+                    "id": 2,
+                    "x": 0,
+                    "y": 160,
+                    "timer": 6
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Scared Left",
+            "frames": [
+                {
+                    "id": 1,
+                    "x": 96,
+                    "y": 64,
+                    "timer": 0
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "name": "Scared Right",
+            "frames": [
+                {
+                    "id": 1,
+                    "x": 96,
+                    "y": 96,
+                    "timer": 0
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "name": "Scared Up",
+            "frames": [
+                {
+                    "id": 1,
+                    "x": 64,
+                    "y": 128,
+                    "timer": 0
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "name": "Scared Down",
+            "frames": [
+                {
+                    "id": 1,
+                    "x": 64,
+                    "y": 160,
+                    "timer": 0
+                }
             ]
         }
     ]

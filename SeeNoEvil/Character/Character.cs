@@ -1,18 +1,20 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SeeNoEvil.Level;
 
 namespace SeeNoEvil.Character {
     public class Character {
         private Vector2 Destination {get; set;}
         private Vector2 Velocity {get; set;}
-        private Vector2 Position {get; set;}
+        public Vector2 Position {get; private set;}
         private Texture2D SpriteSheet;
 
         protected AnimationController AnimationController; 
         protected int Width;
         protected int Height;
         protected Direction Facing;
+        protected PlayField Field;
 
         protected bool Moving => 
             !Destination.Equals(Vector2.Zero) && 
@@ -25,16 +27,18 @@ namespace SeeNoEvil.Character {
             Velocity = Vector2.Zero;
         }
 
-        public void Load(ContentManager content) {
+        public void Load(ContentManager content, PlayField playField) {
             SpriteSheet = content.Load<Texture2D>(AnimationController.Image);
+            Field = playField;
         }
 
         // TODO Do I want to move every frame?
         public void Update() {
-            if(Moving) 
+            if(Moving) {
                 Position = Vector2.Add(Position, Velocity);
-            else if(!AnimationController.IsDefault) 
-                AnimationController.ChangeAnimation(1);
+                AnimationController.Idle = false;
+            }
+            else AnimationController.Idle = true;
         }
 
         public void Draw(SpriteBatch spriteBatch) {
@@ -44,11 +48,11 @@ namespace SeeNoEvil.Character {
                                                      AnimationController.Width,
                                                      AnimationController.Height);
             spriteBatch.Draw(SpriteSheet, Position, srcRectangle, Color.White);
-            // spriteBatch.Draw(SpriteSheet, Position, Color.White);
         }
 
         public virtual void Move(Direction direction) {
             if(!Moving) {
+                int velocity = 1;
                 int x = 0, y = 0;
                 switch(direction) {
                 case Direction.Up:
@@ -64,8 +68,11 @@ namespace SeeNoEvil.Character {
                     x = 1;
                     break;
                 }
-                Destination = Vector2.Add(Position, new Vector2(Width*x, Height*y));
-                Velocity = new Vector2(x, y);
+                var tryPosition = Vector2.Add(Position, new Vector2(Width*x, Height*y));
+                if(Field.TryWalk(tryPosition)) {
+                    Destination = Vector2.Add(Position, new Vector2(Width*x, Height*y));
+                    Velocity = new Vector2(x*velocity, y*velocity);
+                }
             }
         }
     }

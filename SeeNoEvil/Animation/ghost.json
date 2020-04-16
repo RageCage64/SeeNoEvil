@@ -1,0 +1,80 @@
+{
+    "name": "ghost",
+    "image": "Master-no-background-01",
+    "width": 32,
+    "height": 32,
+    "animations": [
+        {
+            "id": 1,
+            "name": "Walk Left",
+            "frames": [
+                {
+                    "id": 1,
+                    "x": 0,
+                    "y": 32,
+                    "timer": 6
+                },
+                {
+                    "id": 2,
+                    "x": 32,
+                    "y": 32,
+                    "timer": 6
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Walk Right",
+            "frames": [
+                {
+                    "id": 1,
+                    "x": 0,
+                    "y": 0,
+                    "timer": 6
+                },
+                {
+                    "id": 2,
+                    "x": 32,
+                    "y": 0,
+                    "timer": 6
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Walk Up",
+            "frames": [
+                {
+                    "id": 1,
+                    "x": 64,
+                    "y": 0,
+                    "timer": 6
+                },
+                {
+                    "id": 2,
+                    "x": 64,
+                    "y": 32,
+                    "timer": 6
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Walk Down",
+            "frames": [
+                {
+                    "id": 1,
+                    "x": 96,
+                    "y": 0,
+                    "timer": 6
+                },
+                {
+                    "id": 2,
+                    "x": 96,
+                    "y": 32,
+                    "timer": 6
+                }
+            ]
+        }
+    ]
+}

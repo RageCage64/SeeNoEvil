@@ -24,12 +24,18 @@ namespace SeeNoEvil.Tiled {
 		public int TileCount {get; set;}
     }
 
-
 	public struct MapLayerModel {
 		public string Name {get; set;}
 		public int Width {get; set;}
 		public int Height {get; set;}
 		public IEnumerable<uint> Data {get; set;}
 		public string Type {get; set;}
+		public IEnumerable<TiledObjectModel> Objects {get; set;}
+    }
+
+    public struct TiledObjectModel {
+		public int Id {get; set;}
+		public float X {get; set;}
+		public float Y {get; set;}
     }
 }

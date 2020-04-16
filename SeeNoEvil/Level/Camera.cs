@@ -10,7 +10,7 @@ namespace SeeNoEvil.Level {
 		private Vector3 TranslationVector => 
 			new Vector3(-Centre.X + (Viewport.Width / 2),
 						-Centre.Y + (Viewport.Height / 2),
-						0);
+						1);
 
 		public Camera(Viewport _viewport) {
 			Viewport = _viewport;
@@ -18,8 +18,9 @@ namespace SeeNoEvil.Level {
 			Centre = new Vector2(Viewport.Width / 2, Viewport.Height / 2);
 		}
 
+		//FIXME Don't need velocity anymore?
         public void Update(Vector2 position, Vector2 velocity) {
-			Centre = Vector2.Add(Centre, velocity);
+			Centre = position;
 			Transform = Matrix.CreateTranslation(TranslationVector);
 		}
     }

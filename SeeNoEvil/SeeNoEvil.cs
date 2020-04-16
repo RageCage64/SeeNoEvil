@@ -17,7 +17,9 @@ namespace SeeNoEvil
         SpriteBatch spriteBatch;
         TilemapLevel level;
         Camera camera;
-        Cat cat;
+        Cat player;
+        GhostController enemyController;
+        PlayField playField;
 
         public SeeNoEvilGame()
         {
@@ -28,10 +30,9 @@ namespace SeeNoEvil
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            level = new TilemapLevel("./Maps/MagicLandCsv.json");
+            // level = new TilemapLevel("./Maps/MagicLandCsv.json");
             // level = new TilemapLevel("./Maps/test.json");
-            cat = new Cat(Vector2.Zero, Direction.Right);
+            level = new TilemapLevel("./Maps/level.json");
 
             base.Initialize();
         }
@@ -40,7 +41,11 @@ namespace SeeNoEvil
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             level.LoadMap(Content);
-            cat.Load(Content);
+            playField = level.GetPlayField();
+            player = new Cat(level.GetPlayerPosition(), Direction.Right);
+            player.Load(Content, playField);
+            enemyController = new GhostController(level.GetGhostCoordinates());
+            enemyController.LoadAll(Content, playField);
             camera = new Camera(GraphicsDevice.Viewport); 
         }
 
@@ -49,26 +54,25 @@ namespace SeeNoEvil
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            int xVelocity = 0, yVelocity = 0;
-            // if(Keyboard.GetState().IsKeyDown(Keys.Down))
-            //     yVelocity = 1;
-            // if(Keyboard.GetState().IsKeyDown(Keys.Up))
-            //     yVelocity = -1;
-            // if(Keyboard.GetState().IsKeyDown(Keys.Left))
-            //     xVelocity = -1;
-            // if(Keyboard.GetState().IsKeyDown(Keys.Right))
-            //     xVelocity = 1;
-            camera.Update(Vector2.Zero, new Vector2(xVelocity, yVelocity));
-
-            if(Keyboard.GetState().IsKeyDown(Keys.Down))
-                cat.Move(Direction.Down);
-            if(Keyboard.GetState().IsKeyDown(Keys.Up))
-                cat.Move(Direction.Up);
-            if(Keyboard.GetState().IsKeyDown(Keys.Left))
-                cat.Move(Direction.Left);
-            if(Keyboard.GetState().IsKeyDown(Keys.Right))
-                cat.Move(Direction.Right);
-            cat.Update();
+            camera.Update(player.Position, Vector2.Zero);
+            if(Keyboard.GetState().IsKeyDown(Keys.Down)) {
+                player.Move(Direction.Down);
+                enemyController.MoveGhosts();
+            }
+            if(Keyboard.GetState().IsKeyDown(Keys.Up)) {
+                player.Move(Direction.Up);
+                enemyController.MoveGhosts();
+            }
+            if(Keyboard.GetState().IsKeyDown(Keys.Left)) {
+                player.Move(Direction.Left);
+                enemyController.MoveGhosts();
+            }
+            if(Keyboard.GetState().IsKeyDown(Keys.Right)) {
+                player.Move(Direction.Right);
+                enemyController.MoveGhosts();
+            }
+            player.Update();
+            enemyController.UpdateAll();
 
             base.Update(gameTime);
         }
@@ -80,8 +84,11 @@ namespace SeeNoEvil
             spriteBatch.Begin(
                 transformMatrix: camera.Transform
             );
-            // level.Draw(spriteBatch, "background");
-            cat.Draw(spriteBatch);
+            level.Draw(spriteBatch, "Sky");
+            level.Draw(spriteBatch, "Ground");
+            level.Draw(spriteBatch, "Bushes");
+            player.Draw(spriteBatch);
+            enemyController.DrawAll(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

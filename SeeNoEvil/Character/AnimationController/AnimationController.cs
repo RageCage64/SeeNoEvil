@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,12 +8,16 @@ namespace SeeNoEvil.Character {
         public string Image {get; private set;}
         public int Width {get; private set;}
         public int Height {get; private set;}
+        public bool Idle;
         public Dictionary<int, Animation> Animations {get; private set;}
         private Animation CurrentAnimation;
-        public Frame CurrentFrame => 
-            CurrentAnimation.GetFrame(); 
-        public bool IsDefault => 
-            CurrentAnimation.Id == 1;
+
+        public Frame CurrentFrame {
+            get {
+                if(Idle) return CurrentAnimation.CurrentFrame;
+                else return CurrentAnimation.GetFrame();
+            }
+        }
 
         public AnimationController(AnimationSetModel model) {
             Name = model.Name;
@@ -25,6 +30,7 @@ namespace SeeNoEvil.Character {
                     return animations;
                 });
             ChangeAnimation(1);
+            Idle = true;
         }
 
         public void ChangeAnimation(int animationId) {
@@ -37,8 +43,8 @@ namespace SeeNoEvil.Character {
         public int Id {get; set;}
         public string Name {get; set;}
         public FrameCollection Frames {get; set;}
+        public Frame CurrentFrame;
         private int TotalFrames;
-        private Frame CurrentFrame;
         private int CurrentFrameId;
 
         public Animation(AnimationModel model) {

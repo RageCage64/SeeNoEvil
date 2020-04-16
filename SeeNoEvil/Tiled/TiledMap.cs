@@ -6,8 +6,10 @@ using SeeNoEvil.Level;
 namespace SeeNoEvil.Tiled {
     public class TiledMap {
 		public Dictionary<string, List<TileLocation>> View {get; private set;}
+		public Dictionary<string, List<ObjectCoordinate>> Objects {get; private set;}
         private bool Infinite;
-        private List<MapLayer> Layers;
+        private List<TileLayer> TileLayers;
+        private List<ObjectLayer> ObjectLayers;
 		private List<TileSet> TileSets;
 		private int TileHeight;
 		private int TileWidth;
@@ -18,7 +20,10 @@ namespace SeeNoEvil.Tiled {
 
         public TiledMap(TiledModel model) {
 			Infinite = model.Infinite;	
-			Layers = model.Layers.Select(model => new MapLayer(model)).ToList();
+			TileLayers = model.Layers.Where(model => model.Type == "tilelayer")
+				.Select(model => new TileLayer(model)).ToList();
+			ObjectLayers = model.Layers.Where(model => model.Type == "objectgroup")
+				.Select(model => new ObjectLayer(model)).ToList();
 			TileSets = model.TileSets.Select(model => new TileSet(model)).ToList();
 			TileHeight = model.TileHeight;
 			TileWidth = model.TileWidth;
@@ -35,7 +40,7 @@ namespace SeeNoEvil.Tiled {
 		public void LoadView() {
 			// Get all tilelayers
 			Dictionary<string, List<DataCoordinate>> layerData = new Dictionary<string, List<DataCoordinate>>();
-			Layers.Where(layer => layer.Type == "tilelayer").ToList()
+			TileLayers.Where(layer => layer.Type == "tilelayer").ToList()
 				.ForEach(layer => {
 					layerData.Add(layer.Name, layer.DataCoordinates);
 				});
@@ -75,6 +80,17 @@ namespace SeeNoEvil.Tiled {
 				});
 		}
 
+		// Load objects on the level
+		public void LoadObjects() {
+			Objects = ObjectLayers.Aggregate(new Dictionary<string, List<ObjectCoordinate>>(),
+				// FIXME This is stupid naming
+				(layers, objects) => {
+					layers.Add(objects.Name, objects.Objects.ToList());
+					return layers;
+				}
+			);
+		}
+
 		// Load tiles into cache if they don't exist
         private void LoadTiles(HashSet<uint> tiles) {
 			foreach(uint gid in tiles) {
@@ -86,4 +102,5 @@ namespace SeeNoEvil.Tiled {
 			}
 		}
     }
+
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using SeeNoEvil.Level;
 
 namespace SeeNoEvil.Tiled {
-    public class MapLayer {
+    public class TileLayer {
 
 		public string Type {get; private set;}
 		public string Name {get; private set;}
@@ -14,7 +14,7 @@ namespace SeeNoEvil.Tiled {
 		private int Height;
 		private List<uint> Data;
 
-        public MapLayer(MapLayerModel model) {
+        public TileLayer(MapLayerModel model) {
 			Name = model.Name;
 			Width = model.Width;
 			Height = model.Height;
