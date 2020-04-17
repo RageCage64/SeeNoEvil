@@ -13,10 +13,10 @@ namespace SeeNoEvil.Character {
         protected AnimationController AnimationController; 
         protected int Width;
         protected int Height;
-        protected Direction Facing;
         protected PlayField Field;
 
-        protected bool Moving => 
+        public Direction Facing;
+        public bool Moving => 
             !Destination.Equals(Vector2.Zero) && 
             !Velocity.Equals(Vector2.Zero) &&
             !Position.Equals(Destination);

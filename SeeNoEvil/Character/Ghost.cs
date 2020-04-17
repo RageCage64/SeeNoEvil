@@ -16,21 +16,20 @@ namespace SeeNoEvil.Character {
             ).ToList();
         }
 
-        public void LoadAll(ContentManager content, PlayField playField) {
+        public void LoadAll(ContentManager content, PlayField playField) =>
             Ghosts.ForEach(ghost => ghost.Load(content, playField));
-        }
 
-        public void DrawAll(SpriteBatch spriteBatch) {
+        public void DrawAll(SpriteBatch spriteBatch) => 
             Ghosts.ForEach(ghost => ghost.Draw(spriteBatch));
-        }
 
-        public void UpdateAll() {
+        public void UpdateAll() => 
             Ghosts.ForEach(ghost => ghost.Update());
-        }
 
-        public void MoveGhosts() {
+        public void MoveGhosts() => 
             Ghosts.ForEach(ghost => ghost.DecideMove());
-        }
+
+        public bool AreGhostsHere(IEnumerable<Vector2> lineOfSight) =>
+            Ghosts.Any(ghost => lineOfSight.Contains(ghost.Position));
     }
 
     public class Ghost : Character {

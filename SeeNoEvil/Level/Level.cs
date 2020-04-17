@@ -39,7 +39,7 @@ namespace SeeNoEvil.Level {
 
 		public PlayField GetPlayField() {
 			Map.View.TryGetValue("Ground", out List<TileLocation> ground);
-			return new PlayField(ground.Where(tile => tile.tile.gid != 0));
+			return new PlayField(ground);
 		}
 
 		public IEnumerable<ObjectCoordinate> GetGhostCoordinates() {

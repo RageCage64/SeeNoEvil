@@ -19,7 +19,7 @@ namespace SeeNoEvil.Level {
 		}
 
 		//FIXME Don't need velocity anymore?
-        public void Update(Vector2 position, Vector2 velocity) {
+        public void Update(Vector2 position) {
 			Centre = position;
 			Transform = Matrix.CreateTranslation(TranslationVector);
 		}

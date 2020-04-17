@@ -20,6 +20,7 @@ namespace SeeNoEvil
         Cat player;
         GhostController enemyController;
         PlayField playField;
+        bool scared;
 
         public SeeNoEvilGame()
         {
@@ -54,7 +55,6 @@ namespace SeeNoEvil
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            camera.Update(player.Position, Vector2.Zero);
             if(Keyboard.GetState().IsKeyDown(Keys.Down)) {
                 player.Move(Direction.Down);
                 enemyController.MoveGhosts();
@@ -73,7 +73,11 @@ namespace SeeNoEvil
             }
             player.Update();
             enemyController.UpdateAll();
-
+            camera.Update(player.Position);
+            if(!player.Moving) 
+                scared = enemyController.AreGhostsHere(playField.GetLineOfSight(player.Facing, player.Position));
+            if(scared)
+                player.Scared();
             base.Update(gameTime);
         }
 
