@@ -19,6 +19,28 @@ namespace SeeNoEvil.Character {
             }
         }
 
+        public Vector2 GetSight() {
+            Vector2 sight = Position;
+            for(int i = 0; i <= 9; i++) {
+                switch(Facing) {
+                case Direction.Up:
+                    sight.Y -= Height;
+                    break;
+                case Direction.Down:
+                    sight.Y += Height;
+                    break;
+                case Direction.Left:
+                    sight.X -= Width;
+                    break;
+                case Direction.Right:
+                    sight.X += Width;
+                    break;
+                }
+                if(!Field.TryWalk(sight)) break;
+            }
+            return sight;
+        }
+
         public void ChooseAnimation(Direction direction) {
             switch(direction) {
             case Direction.Up:

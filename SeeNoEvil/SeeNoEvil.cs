@@ -79,7 +79,7 @@ namespace SeeNoEvil
                 enemyController.UpdateAll();
                 camera.Update(player.Position);
                 if(!player.Moving) {
-                    scared = enemyController.AreGhostsHere(player.Position, player.Facing);
+                    scared = enemyController.AreGhostsHere(player.Position, player.GetSight(), player.Facing);
                 }
                 if(scared) {
                     player.Scared();

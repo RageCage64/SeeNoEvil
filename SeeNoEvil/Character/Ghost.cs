@@ -28,12 +28,8 @@ namespace SeeNoEvil.Character {
         public void MoveGhosts() => 
             Ghosts.ForEach(ghost => ghost.DecideMove());
 
-        public bool AreGhostsHere(Vector2 playerPosition, Direction direction) =>
-            Ghosts.Any(ghost => ghost.IsInSight(playerPosition, direction));
-        // public bool AreGhostsHere(Vector2 playerPosition, Direction direction, out Ghost ghost) {
-        //     ghost = Ghosts.FirstOrDefault(ghost => ghost.IsInSight(playerPosition, direction));
-        //     return ghost != null;
-        // }
+        public bool AreGhostsHere(Vector2 playerPosition, Vector2 playerSight, Direction direction) =>
+            Ghosts.Any(ghost => ghost.IsInSight(playerPosition, playerSight, direction));
     }
 
     public class Ghost : Character {
@@ -66,20 +62,20 @@ namespace SeeNoEvil.Character {
             base.Move(randomDirection);
         }
 
-        // FIXME This shit is ugly
-        public bool IsInSight(Vector2 playerPosition, Direction direction) {
+        // FIXME it's a bit better now but still 
+        public bool IsInSight(Vector2 playerPosition, Vector2 playerSight, Direction direction) {
             if(direction == Direction.Up)  
                 return playerPosition.X == Position.X &&
-                    (playerPosition.Y > Position.Y) && (Position.Y > playerPosition.Y-32*9);
+                    (playerPosition.Y > Position.Y) && (Position.Y > playerSight.Y);
             else if(direction == Direction.Down)
                 return playerPosition.X == Position.X &&
-                    (playerPosition.Y < Position.Y) && (Position.Y < playerPosition.Y+32*9);
+                    (playerPosition.Y < Position.Y) && (Position.Y < playerSight.Y);
             else if(direction == Direction.Left)
                 return playerPosition.Y == Position.Y &&
-                    (playerPosition.X > Position.X) && (Position.X > playerPosition.X-32*9);
+                    (playerPosition.X > Position.X) && (Position.X > playerSight.X);
             else 
                 return playerPosition.Y == Position.Y &&
-                    (playerPosition.X < Position.X) && (Position.X < playerPosition.X+32*9);
+                    (playerPosition.X < Position.X) && (Position.X < playerSight.X);
         }
     }
 }
