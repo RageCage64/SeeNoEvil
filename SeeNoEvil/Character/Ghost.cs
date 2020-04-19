@@ -28,8 +28,12 @@ namespace SeeNoEvil.Character {
         public void MoveGhosts() => 
             Ghosts.ForEach(ghost => ghost.DecideMove());
 
-        public bool AreGhostsHere(IEnumerable<Vector2> lineOfSight) =>
-            Ghosts.Any(ghost => lineOfSight.Contains(ghost.Position));
+        public bool AreGhostsHere(Vector2 playerPosition, Direction direction) =>
+            Ghosts.Any(ghost => ghost.IsInSight(playerPosition, direction));
+        // public bool AreGhostsHere(Vector2 playerPosition, Direction direction, out Ghost ghost) {
+        //     ghost = Ghosts.FirstOrDefault(ghost => ghost.IsInSight(playerPosition, direction));
+        //     return ghost != null;
+        // }
     }
 
     public class Ghost : Character {
@@ -60,6 +64,22 @@ namespace SeeNoEvil.Character {
             }
 
             base.Move(randomDirection);
+        }
+
+        // FIXME This shit is ugly
+        public bool IsInSight(Vector2 playerPosition, Direction direction) {
+            if(direction == Direction.Up)  
+                return playerPosition.X == Position.X &&
+                    (playerPosition.Y > Position.Y) && (Position.Y > playerPosition.Y-32*9);
+            else if(direction == Direction.Down)
+                return playerPosition.X == Position.X &&
+                    (playerPosition.Y < Position.Y) && (Position.Y < playerPosition.Y+32*9);
+            else if(direction == Direction.Left)
+                return playerPosition.Y == Position.Y &&
+                    (playerPosition.X > Position.X) && (Position.X > playerPosition.X-32*9);
+            else 
+                return playerPosition.Y == Position.Y &&
+                    (playerPosition.X < Position.X) && (Position.X < playerPosition.X+32*9);
         }
     }
 }

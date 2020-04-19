@@ -21,12 +21,15 @@ namespace SeeNoEvil
         GhostController enemyController;
         PlayField playField;
         bool scared;
+        int scaredTimer = 0;
+        Ghost debugGhost;
 
         public SeeNoEvilGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            debugGhost = null;
         }
 
         protected override void Initialize()
@@ -55,29 +58,39 @@ namespace SeeNoEvil
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if(Keyboard.GetState().IsKeyDown(Keys.Down)) {
-                player.Move(Direction.Down);
-                enemyController.MoveGhosts();
-            }
-            if(Keyboard.GetState().IsKeyDown(Keys.Up)) {
-                player.Move(Direction.Up);
-                enemyController.MoveGhosts();
-            }
-            if(Keyboard.GetState().IsKeyDown(Keys.Left)) {
-                player.Move(Direction.Left);
-                enemyController.MoveGhosts();
-            }
-            if(Keyboard.GetState().IsKeyDown(Keys.Right)) {
-                player.Move(Direction.Right);
-                enemyController.MoveGhosts();
-            }
-            player.Update();
-            enemyController.UpdateAll();
-            camera.Update(player.Position);
-            if(!player.Moving) 
-                scared = enemyController.AreGhostsHere(playField.GetLineOfSight(player.Facing, player.Position));
-            if(scared)
-                player.Scared();
+            if(scaredTimer == 0) {
+                if(Keyboard.GetState().IsKeyDown(Keys.Down)) {
+                    player.Move(Direction.Down);
+                    enemyController.MoveGhosts();
+                }
+                if(Keyboard.GetState().IsKeyDown(Keys.Up)) {
+                    player.Move(Direction.Up);
+                    enemyController.MoveGhosts();
+                }
+                if(Keyboard.GetState().IsKeyDown(Keys.Left)) {
+                    player.Move(Direction.Left);
+                    enemyController.MoveGhosts();
+                }
+                if(Keyboard.GetState().IsKeyDown(Keys.Right)) {
+                    player.Move(Direction.Right);
+                    enemyController.MoveGhosts();
+                }
+                player.Update();
+                enemyController.UpdateAll();
+                camera.Update(player.Position);
+                if(!player.Moving) {
+                    scared = enemyController.AreGhostsHere(player.Position, player.Facing);
+                }
+                if(scared) {
+                    player.Scared();
+                    scaredTimer = 60;
+                }
+            } else if(scaredTimer == 1) {
+                scared = false;
+                player.Reset();
+                player.ChooseAnimation(player.Facing);
+                scaredTimer = 0;
+            } else scaredTimer--;
             base.Update(gameTime);
         }
 

@@ -10,6 +10,7 @@ namespace SeeNoEvil.Character {
         public Vector2 Position {get; private set;}
         private Texture2D SpriteSheet;
 
+        protected Vector2 StartingPosition;
         protected AnimationController AnimationController; 
         protected int Width;
         protected int Height;
@@ -23,6 +24,7 @@ namespace SeeNoEvil.Character {
 
         public Character(Vector2 position) {
             Position = position;
+            StartingPosition = position;
             Destination = Vector2.Zero; 
             Velocity = Vector2.Zero;
         }
@@ -52,7 +54,7 @@ namespace SeeNoEvil.Character {
 
         public virtual void Move(Direction direction) {
             if(!Moving) {
-                int velocity = 1;
+                int velocity = 16;
                 int x = 0, y = 0;
                 switch(direction) {
                 case Direction.Up:
@@ -72,8 +74,15 @@ namespace SeeNoEvil.Character {
                 if(Field.TryWalk(tryPosition)) {
                     Destination = Vector2.Add(Position, new Vector2(Width*x, Height*y));
                     Velocity = new Vector2(x*velocity, y*velocity);
+                    Facing = direction;
                 }
             }
+        }
+
+        public void Reset() {
+            Position = StartingPosition;
+            Destination = Vector2.Zero;
+            Velocity = Vector2.Zero;
         }
     }
     public enum Direction {

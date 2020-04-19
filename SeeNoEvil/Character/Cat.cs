@@ -19,7 +19,7 @@ namespace SeeNoEvil.Character {
             }
         }
 
-        private void ChooseAnimation(Direction direction) {
+        public void ChooseAnimation(Direction direction) {
             switch(direction) {
             case Direction.Up:
                 AnimationController.ChangeAnimation(3);
